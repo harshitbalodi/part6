@@ -1,14 +1,12 @@
 import { useDispatch } from 'react-redux';
-import { asObject } from '../reducers/anecdoteReducer';
+import {addAnecdote} from '../reducers/anecdoteReducer'
 const AnecdoteForm = () => {
     const dispatch =  useDispatch();
-    const handleCreate = (e) => {
+    const handleCreate = async (e) => {
         e.preventDefault();
         const anecdote = e.target.elements.anecdote.value; 
         e.target.elements.anecdote.value = '';
-        dispatch({ type: 'anecdotes/newAnecdote', payload: asObject(anecdote)});
-        dispatch({type:'notification/setNotification', payload:`${anecdote} is added`});
-        setTimeout(()=>dispatch({type:'notification/setNotification', payload:null}),5000)
+        dispatch(addAnecdote(anecdote))
       }
     return (
         <div>

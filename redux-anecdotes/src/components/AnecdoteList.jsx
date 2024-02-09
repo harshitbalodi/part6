@@ -1,12 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
+import { likeAnecdoteThunk } from "../reducers/anecdoteReducer";
 
 const List = ({anecdote}) => {
     const dispatch = useDispatch();
-    const vote = (id) => {
-        dispatch({ type: 'anecdotes/likeAnecdote', payload: id });
-        dispatch({type:'notification/setNotification', payload:`You liked ${anecdote.content}`})
-        setTimeout(()=>dispatch({type:'notification/setNotification', payload:null}),5000)
+    const vote = async () => {
+        try{
+        dispatch(likeAnecdoteThunk(anecdote.id, anecdote));
+        }catch(error){
+            console.log(error);
+        }
+        
     }
     return <>
         <div>
@@ -14,11 +18,9 @@ const List = ({anecdote}) => {
         </div>
         <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={vote}>vote</button>
         </div>
     </>
-
-
 }
 
 const AnecdoteList = () => {
